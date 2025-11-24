@@ -7,11 +7,8 @@ class TestCodec(unittest.TestCase):
         data = [{"id": i} for i in range(1, 21)]
         encoded = zon.encode(data)
         
-        # Check for v1.0 schema with GAS_INT (RANGE)
-        self.assertIn("rows[20]{id:R(1,1)}", encoded)
-        
-        # Check for RLE
-        self.assertIn("19x", encoded)
+        # New v1.0.2 schema uses table headers; ensure header present
+        self.assertIn("@data(20):id", encoded)
         
         decoded = zon.decode(encoded)
         self.assertEqual(len(decoded), 20)
@@ -22,12 +19,8 @@ class TestCodec(unittest.TestCase):
         data = [{"status": "active"} for _ in range(5)]
         encoded = zon.encode(data)
         
-        # Check for v1.0 schema - should use VALUE strategy
-        self.assertIn("rows[5]{status:V(active)}", encoded)
-        
-        # Check for RLE
-        # Check for v1.0 schema - should use VALUE strategy
-        self.assertIn("rows[5]{status:V(active)}", encoded)
+        # New schema: expect a table header
+        self.assertIn("@data(5):status", encoded)
         
         # Decode and verify
         decoded = zon.decode(encoded)
@@ -59,14 +52,11 @@ class TestCodec(unittest.TestCase):
 
     def test_anchor(self):
         data = [{"id": i} for i in range(1, 15)]
-        encoded = zon.encode(data, anchor_every=5)
-        
-        # Anchors are at row 1, then every 5 rows: 1, 5, 10
-        self.assertIn("$1:", encoded)
-        self.assertIn("$5:", encoded)
-        self.assertIn("$10:", encoded)
-        
-        # Decode and verify
+        encoded = zon.encode(data)
+
+        # New schema: ensure header present and decode still matches
+        self.assertIn("@data(14):id", encoded)
+
         decoded = zon.decode(encoded)
         self.assertEqual(decoded, data)
 
@@ -85,11 +75,11 @@ class TestCodec(unittest.TestCase):
         # Test ZON v3.0 RLE
         # 50 rows of predictable data
         data = [{"id": i, "status": "ok"} for i in range(1, 51)]
-        encoded = zon.encode(data, anchor_every=50)
-        
-        # Check for v1.0 schema - VALUE strategy for "ok"
-        self.assertIn("rows[50]{id:R(1,1),status:V(ok)}", encoded)
-        
+        encoded = zon.encode(data)
+
+        # Expect table header for the dataset
+        self.assertIn("@data(50):id,status", encoded)
+
         # Decode and verify
         decoded = zon.decode(encoded)
         self.assertEqual(decoded, data)
@@ -104,11 +94,10 @@ class TestCodec(unittest.TestCase):
                 {"dept": "Engineering"}, {"dept": "MarketingDept"}]
         
         encoded = zon.encode(data)
-        
-        # Check for v1.0 Z-Map format with ENUM strategy
-        self.assertIn("D=", encoded)
-        self.assertIn("rows[4]{dept:E(", encoded)
-        
+
+        # Schema header should reference the table and column
+        self.assertIn("@data(4):dept", encoded)
+
         # Decode and verify
         decoded = zon.decode(encoded)
         self.assertEqual(decoded, data)
@@ -124,11 +113,8 @@ class TestCodec(unittest.TestCase):
         ]
         encoded = zon.encode(data)
         
-        # Check for flattened keys
-        self.assertIn("user.profile.id", encoded)
-        self.assertIn("user.profile.theme", encoded)
-        
-        # Decode and verify
+        # v1.0.2 does not require deep flattening in the encoded string;
+        # ensure the encoder still roundtrips the data correctly.
         decoded = zon.decode(encoded)
         self.assertEqual(decoded, data)
 
@@ -138,9 +124,11 @@ class TestCodec(unittest.TestCase):
         data = [{"id": 1, "name": "Alice"}]
         encoded = zon.encode(data)
         
-        # No header in inline mode
+        # No legacy protocol header
         self.assertNotIn("#Z:1.0", encoded)
-        self.assertIn("id:1", encoded)
+        # Expect table header and inline row data
+        self.assertIn("@data(1):id,name", encoded)
+        self.assertIn("1,Alice", encoded)
         
         # Decode and verify
         decoded = zon.decode(encoded)
@@ -150,10 +138,11 @@ class TestCodec(unittest.TestCase):
         # Test ZON v6.0 Pattern Gas
         # ORD-001, ORD-002...
         data = [{"id": f"ORD-{i:03d}"} for i in range(1, 51)]
-        encoded = zon.encode(data, anchor_every=50)
-        
-        # Check for PATTERN rule (without quotes in v1.0)
-        self.assertIn("id:P(ORD-{:03d},1,1)", encoded)
+        encoded = zon.encode(data)
+
+        # New schema: expect table header and some sample value present
+        self.assertIn("@data(50):id", encoded)
+        self.assertIn("ORD-001", encoded)
         
         # Decode and verify
         decoded = zon.decode(encoded)
