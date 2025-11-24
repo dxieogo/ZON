@@ -5,7 +5,7 @@ All notable changes to the ZON Format project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.1] - 2025-11-24
+## [1.0.2] - 2025-11-24
 
 ### Changed - "ClearText" Major Format Overhaul
 
@@ -65,11 +65,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Upgrade Notes
 
-### From 1.0.0 to 1.0.1
+### From 1.0.0 to 1.0.2
 
-**⚠️ Breaking Change**: The encoded format has changed completely. Data encoded with v1.0.0 will **not** decode correctly with v1.0.1.
+**⚠️ Breaking Change**: The encoded format has changed completely. Data encoded with v1.0.0 will **not** decode correctly with v1.0.2.
 
-**Migration**: Re-encode your data with v1.0.1:
+**Migration**: Re-encode your data with v1.0.2:
 
 ```python
 import zon

@@ -1,5 +1,5 @@
 """
-ZON Decoder v8.0 - ClearText Format
+ZON Decoder v1.0.2 - ClearText Format
 
 This decoder parses clean, document-style ZON with YAML-like metadata
 and CSV-like tables using @table syntax.
@@ -17,7 +17,7 @@ from .exceptions import ZonDecodeError
 class ZonDecoder:
     def decode(self, zon_str: str) -> Any:
         """
-        Decode ZON v8.0 ClearText format to original data structure.
+        Decode ZON v1.0.2 ClearText format to original data structure.
         
         Args:
             zon_str: ZON-encoded string
@@ -313,22 +313,51 @@ class ZonDecoder:
         """
         val = val.strip()
         
-        # Booleans
-        if val == 'T':
-            return True
-        if val == 'F':
-            return False
-        
-        # Null
-        if val == 'null':
-            return None
-        
-        # Quoted string (JSON style) - must check BEFORE delimiter check
+        # Quoted string (JSON style) - must check BEFORE primitives
         if val.startswith('"'):
             try:
-                return json.loads(val)
+                decoded = json.loads(val)
+                # If decoded value is a string that looks like a ZON structure, parse it recursively
+                if isinstance(decoded, str):
+                    stripped = decoded.strip()
+                    if stripped.startswith('{') or stripped.startswith('['):
+                        return self._parse_zon_node(stripped)
+                return decoded
             except json.JSONDecodeError:
-                pass
+                # Fallback: CSV unquoting for metadata values
+                # Metadata values are CSV-quoted by encoder but not parsed by csv.reader
+                if val.startswith('"') and val.endswith('"'):
+                    unquoted = val[1:-1].replace('""', '"')
+                    
+                    # Try to parse unquoted value as JSON (it might be a JSON string or object)
+                    try:
+                        decoded_unquoted = json.loads(unquoted)
+                        # If it's a string, check if it's a ZON node (recursive)
+                        if isinstance(decoded_unquoted, str):
+                             stripped = decoded_unquoted.strip()
+                             if stripped.startswith('{') or stripped.startswith('['):
+                                 return self._parse_zon_node(stripped)
+                        return decoded_unquoted
+                    except json.JSONDecodeError:
+                        pass
+                    
+                    # Check for ZON structure in unquoted string
+                    stripped = unquoted.strip()
+                    if stripped.startswith('{') or stripped.startswith('['):
+                        return self._parse_zon_node(stripped)
+                        
+                    return unquoted
+
+        # Booleans (case-insensitive)
+        val_lower = val.lower()
+        if val_lower in ['t', 'true']:
+            return True
+        if val_lower in ['f', 'false']:
+            return False
+        
+        # Null (case-insensitive)
+        if val_lower in ['null', 'none', 'nil']:
+            return None
         
         # Check for ZON-style nested structures (braced)
         if val.startswith('{') or val.startswith('['):
@@ -345,9 +374,6 @@ class ZonDecoder:
         # Double-encoded JSON string fallback (legacy support or explicit JSON)
         if val.startswith('"') and val.endswith('"'):
              try:
-                 # It might be a JSON string that was double-quoted
-                 # e.g. "foo,bar" -> CSV: """foo,bar""" -> unquoted: "foo,bar"
-                 # If it looks like a JSON string, try to parse it
                  return json.loads(val)
              except json.JSONDecodeError:
                  pass
@@ -424,7 +450,7 @@ class ZonDecoder:
 
 def decode(data: str) -> Any:
     """
-    Convenience function to decode ZON v8.0 format to original data.
+    Convenience function to decode ZON v1.0.2 format to original data.
     
     Args:
         data: ZON-encoded string

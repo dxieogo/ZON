@@ -1,15 +1,4 @@
-import sys
-import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
-
-import zon
-import json
-
-true = True
-false = False
-null = None
-
-json_data = {
+{
   "context": {
     "task": "Our favorite hikes together",
     "location": "Boulder",
@@ -43,10 +32,3 @@ json_data = {
     }
   ]
 }
-
-compressed = zon.encode(json_data)
-print("Encoded ZON:")
-print(compressed)
-print("\nDecoded Data:")
-decoded = zon.decode(compressed)
-print(json.dumps(decoded, indent=2))

@@ -1,5 +1,5 @@
 """
-ZON Encoder v8.0 - ClearText Format
+ZON Encoder v1.0.2 - ClearText Format
 
 This encoder produces clean, document-style output with YAML-like metadata
 and CSV-like tables using @table syntax.
@@ -21,7 +21,7 @@ class ZonEncoder:
 
     def encode(self, data: Any) -> str:
         """
-        Encode data to ZON v8.0 ClearText format.
+        Encode data to ZON v1.0.2 ClearText format.
         
         Args:
             data: Input data (list or dict)
@@ -215,16 +215,7 @@ class ZonEncoder:
         
         return analysis
 
-    def _format_value(self, val: Any) -> str:
-        """
-        Format a value with minimal quoting.
-        
-        Args:
-            val: Value to format
-            
-        Returns:
-            Formatted string
-        """
+
     def _csv_quote(self, s: str) -> str:
         """
         Quote a string for CSV (RFC 4180).
@@ -234,16 +225,7 @@ class ZonEncoder:
         escaped = s.replace('"', '""')
         return f'"{escaped}"'
 
-    def _format_value(self, val: Any) -> str:
-        """
-        Format a value with minimal quoting.
-        
-        Args:
-            val: Value to format
-            
-        Returns:
-            Formatted string
-        """
+
     def _format_zon_node(self, val: Any) -> str:
         """
         Format nested structure using YAML-like ZON syntax:
@@ -352,7 +334,10 @@ class ZonEncoder:
         # Check if it looks like a number/bool/null (needs type protection)
         # These must be encoded as JSON strings ("...") so decoder sees quotes
         needs_type_protection = False
-        if s in ['T', 'F', 'null', GAS_TOKEN, LIQUID_TOKEN]:
+        s_lower = s.lower()
+        if s_lower in ['t', 'f', 'true', 'false', 'null', 'none', 'nil']:
+            needs_type_protection = True
+        elif s in [GAS_TOKEN, LIQUID_TOKEN]:
             needs_type_protection = True
         elif s.isdigit() or (s.startswith('-') and s[1:].isdigit()):
             needs_type_protection = True
@@ -460,11 +445,11 @@ class ZonEncoder:
 
 def encode(data: Any, anchor_interval: int = DEFAULT_ANCHOR_INTERVAL) -> str:
     """
-    Convenience function to encode data to ZON v8.0 format.
+    Convenience function to encode data to ZON v1.0.2 format.
     
     Args:
         data: Input data
-        anchor_interval: Interval for anchor rows (legacy, unused in v8.0)
+        anchor_interval: Interval for anchor rows (legacy, unused in v1.0.2)
         
     Returns:
         ZON-encoded string in ClearText format

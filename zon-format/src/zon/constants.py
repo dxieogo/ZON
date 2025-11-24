@@ -1,5 +1,5 @@
-# ZON Protocol Constants v8.0 (ClearText)
-VERSION = "8.0"
+# ZON Protocol Constants v1.0.2 (ClearText)
+VERSION = "1.0.2"
 
 # Format markers
 TABLE_MARKER = "@"          # @hikes(3): col1, col2

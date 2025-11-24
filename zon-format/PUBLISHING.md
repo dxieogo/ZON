@@ -1,72 +1,70 @@
-# Publishing ZON to PyPI
+*** Begin Minimal Publishing Guide ***
 
-This guide details the steps to release a new version of `zon-format` to PyPI.
+1) Prepare environment
 
-## Prerequisites
+```zsh
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install build wheel twine
+```
 
-1.  **PyPI Account**: You need an account on [PyPI](https://pypi.org/) and [TestPyPI](https://test.pypi.org/).
-2.  **API Token**: Generate an API token on PyPI and configure it in your `~/.pypirc` or use it directly.
-3.  **Build Tools**: Ensure `build` and `twine` are installed:
-    ```bash
-    pip install build twine
-    ```
+2) Clean
 
-## 1. Prepare Release
+```zsh
+cd zon-format
+rm -rf build/ dist/ ./*.egg-info
+```
 
-1.  **Update Version**:
-    - Edit `pyproject.toml`: `version = "1.0.1"`
-    - Edit `src/zon/constants.py`: `VERSION = 8.0` (Format version, not package version)
-    - Update `CHANGELOG.md` with release notes.
+3) Build
 
-2.  **Verify**:
-    - Run tests: `python -m pytest tests/`
-    - Run benchmarks: `python benchmarks/run.py`
-    - Check documentation: `README.md`, `EXAMPLES.md`
-
-## 2. Build Package
-
-Clean previous builds and create new distribution files:
-
-```bash
-rm -rf dist/
+```zsh
 python -m build
+ls -lh dist/
 ```
 
-This will create `dist/zon_format-1.0.1-py3-none-any.whl` and `dist/zon_format-1.0.1.tar.gz`.
+4) Check
 
-## 3. Test Release (TestPyPI)
+```zsh
+python -m twine check dist/*
+```
 
-Upload to TestPyPI first to verify everything looks correct:
+5) Upload to TestPyPI
 
-```bash
+```zsh
 python -m twine upload --repository testpypi dist/*
+# username: __token__
+# password: <TestPyPI token>
 ```
 
-Install from TestPyPI to verify:
+6) Test install from TestPyPI
 
-```bash
-pip install --index-url https://test.pypi.org/simple/ --no-deps zon-format
+```zsh
+python -m venv test_env
+source test_env/bin/activate
+pip install --upgrade pip
+pip install --index-url https://test.pypi.org/simple/ zon-format
+python -c "import zon; print('import OK')"
+deactivate
+rm -rf test_env
 ```
 
-## 4. Official Release (PyPI)
+7) Upload to PyPI
 
-Once verified, upload to the official PyPI repository:
-
-```bash
+```zsh
 python -m twine upload dist/*
+# username: __token__
+# password: <PyPI token>
 ```
 
-## 5. Post-Release
+8) Verify production install
 
-1.  **Tag Release**:
-    ```bash
-    git tag v1.0.1
-    git push origin v1.0.1
-    ```
-2.  **GitHub Release**: Create a new release on GitHub with the changelog.
+```zsh
+pip install --upgrade pip
+pip install zon-format
+python -c "import zon; print('import OK')"
+```
 
----
-
-**Troubleshooting**:
-- If upload fails with "File already exists", ensure you bumped the version number.
-- If installation fails, check `MANIFEST.in` to ensure all files are included.
+Notes
+- If `python -m build` fails, ensure `build` is installed in the active venv.
+- Prefer installing the wheel directly for local tests: `python -m pip install dist/*.whl`.
+- If PyPI rejects an upload with "File already exists", bump the version in `pyproject.toml`, rebuild, and re-upload.

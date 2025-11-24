@@ -52,3 +52,8 @@ jobs:
     - name: Test basic encode/decode
       run: |
         python -c "import sys; sys.path.insert(0, 'zon-format/src'); import zon; data = [{'id': 1, 'name': 'test'}]; encoded = zon.encode(data); decoded = zon.decode(encoded); assert decoded == data; print('✓ Basic encode/decode works')"
+
+    - name: Run Regression Benchmark
+      run: |
+        cd zon-format
+        python test_comprehensive.py
