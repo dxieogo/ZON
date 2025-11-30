@@ -2,7 +2,7 @@
 
 Copyright (c) 2025 ZON-FORMAT (Roni Bhakta)
 
-Complete API documentation for `zon-format` v1.0.3 (Python).
+Complete API documentation for `zon-format` v1.0.4 (Python).
 
 ## Installation
 
@@ -122,6 +122,63 @@ data = zon.decode(zon_data, strict=False)
 
 ---
 
+## Schema Validation API
+
+ZON provides a runtime schema validation library for LLM guardrails.
+
+### `zon` Builder
+
+Fluent API for defining schemas.
+
+```python
+from zon import zon
+```
+
+#### Methods
+
+- **`zon.string()`**: Matches any string.
+- **`zon.number()`**: Matches any number (no NaN/Infinity).
+- **`zon.boolean()`**: Matches `True` or `False`.
+- **`zon.enum(values: list)`**: Matches one of the provided string values.
+- **`zon.array(schema: ZonSchema)`**: Matches a list where every element matches `schema`.
+- **`zon.object(shape: dict)`**: Matches a dict with the specified shape.
+
+#### Modifiers
+
+- **`.optional()`**: Marks a field as optional (can be `None` or missing).
+- **`.describe(text: str)`**: Adds a description for prompt generation.
+
+### `validate(input, schema) -> ZonResult`
+
+Validates input against a schema. Accepts either a raw ZON string (which it decodes) or a pre-decoded Python object.
+
+**Returns:** `ZonResult`
+```python
+class ZonResult:
+    success: bool
+    data: Any  # Present if success=True
+    error: str  # Present if success=False
+    issues: list  # List of validation issues
+```
+
+**Example:**
+
+```python
+from zon import zon, validate
+
+UserSchema = zon.object({
+    'name': zon.string(),
+    'role': zon.enum(['admin', 'user'])
+})
+
+result = validate(llm_output, UserSchema)
+if result.success:
+    # result.data is the validated data
+    print(result.data)
+```
+
+---
+
 ## Error Handling
 
 ### `ZonDecodeError`
@@ -197,7 +254,7 @@ data = zon.decode(zon_string, strict=False)
 ```python
 data = {
     "name": "ZON Format",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "active": True,
     "score": 98.5
 }
@@ -206,10 +263,10 @@ encoded = zon.encode(data)
 # active:T
 # name:ZON Format
 # score:98.5
-# version:"1.0.3"
+# version:"1.0.4"
 
 decoded = zon.decode(encoded)
-# {"name": "ZON Format", "version": "1.0.3", "active": True, "score": 98.5}
+# {"name": "ZON Format", "version": "1.0.4", "active": True, "score": 98.5}
 ```
 
 ### Example 2: Uniform Table
@@ -303,8 +360,8 @@ test_round_trip("hello")                          # ✅
 ```
 
 **Verified:**
-- ✅ 93/93 unit tests pass
-- ✅ 13/13 example datasets verified
+- ✅ 94/94 unit tests pass
+- ✅ 27/27 example datasets verified
 - ✅ Zero data loss across all test cases
 
 ---
@@ -318,14 +375,25 @@ test_round_trip("hello")                          # ✅
 
 ### Token Efficiency
 
-Compared to JSON on typical LLM data:
+**Structure**: Mixed uniform tables + nested objects  
+**Questions**: 309 total (field retrieval, aggregation, filtering, structure awareness)
 
-| Format | Tokens | Savings |
-|--------|--------|---------|
-| JSON (formatted) | 28,042 | - |
-| JSON (compact) | 27,300 | 2.6% |
-| TOON | 20,988 | 25.1% |
-| **ZON** | **19,995** | **29%** 👑 |
+#### Efficiency Ranking (Accuracy per 10K Tokens)
+
+Each format ranked by efficiency (accuracy percentage per 10,000 tokens):
+
+```
+ZON            ████████████████████ 1430.6 acc%/10K │  99.0% acc │ 692 tokens 👑
+CSV            ███████████████████░ 1386.5 acc%/10K │  99.0% acc │ 714 tokens
+JSON compact   ████████████████░░░░ 1143.4 acc%/10K │  91.7% acc │ 802 tokens
+TOON           ████████████████░░░░ 1132.7 acc%/10K │  99.0% acc │ 874 tokens
+JSON           ██████████░░░░░░░░░░  744.6 acc%/10K │  96.8% acc │ 1,300 tokens
+```
+
+*Efficiency score = (Accuracy % ÷ Tokens) × 10,000. Higher is better.*
+
+> [!TIP]
+> ZON achieves **99.0% accuracy** while using **20.8% fewer tokens** than TOON and **13.7% fewer** than Minified JSON.
 
 **ZON is optimized for:**
 - ✅ Uniform lists of objects (tables)
