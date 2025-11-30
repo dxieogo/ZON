@@ -2,7 +2,7 @@
 
 ## Zero Overhead Notation - Formal Specification
 
-**Version:** 1.0.5
+**Version:** 1.0.4
 
 **Date:** 2025-11-28
 

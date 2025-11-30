@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.5] - 2025-11-30
+## [1.0.4] - 2025-11-30
 
 ### Added
 - **Colon-less Syntax:** Objects and arrays in nested positions now use `key{...}` and `key[...]` syntax, removing redundant colons.
@@ -80,7 +80,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CLI tool for encoding/decoding
 - Comprehensive test suite
 
-[1.0.5]: https://github.com/ZON-Format/ZON/releases/tag/v1.0.5
+[1.0.4]: https://github.com/ZON-Format/ZON/releases/tag/v1.0.4
 [1.0.3]: https://github.com/ZON-Format/ZON/releases/tag/v1.0.3
 [1.0.2]: https://github.com/ZON-Format/ZON/releases/tag/v1.0.2
 [1.0.0]: https://github.com/ZON-Format/ZON/releases/tag/v1.0.0

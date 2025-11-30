@@ -1,5 +1,5 @@
 """
-ZON Decoder v1.0.5 - Compact Hybrid Format
+ZON Decoder v1.0.4 - Compact Hybrid Format
 
 Supports both v1.x and v2.0.0 formats:
 - v2.0: Compact headers (@count:), sequential ID reconstruction, sparse tables

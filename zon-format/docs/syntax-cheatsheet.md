@@ -2,7 +2,7 @@
 
 Copyright (c) 2025 ZON-FORMAT (Roni Bhakta)
 
-Quick reference for ZON format syntax. Cross-referenced with actual implementation in v1.0.5.
+Quick reference for ZON format syntax. Cross-referenced with actual implementation in v1.0.4.
 
 ## Basic Types
 
@@ -250,7 +250,7 @@ path:"C:\\Users\\data"
 
 **ZON:**
 ```zon
-metadata{version:1.0.5,env:production}
+metadata{version:1.0.4,env:production}
 users:@(3):active,id,loginCount,name
 T,1,42,Alice
 T,2,17,Bob

@@ -2,7 +2,7 @@
 
 Copyright (c) 2025 ZON-FORMAT (Roni Bhakta)
 
-Complete API documentation for `zon-format` v1.0.5 (Python).
+Complete API documentation for `zon-format` v1.0.4 (Python).
 
 ## Installation
 
@@ -236,7 +236,7 @@ data = zon.decode(zon_string, strict=False)
 ```python
 data = {
     "name": "ZON Format",
-    "version": "1.0.5",
+    "version": "1.0.4",
     "active": True,
     "score": 98.5
 }
@@ -245,10 +245,10 @@ encoded = zon.encode(data)
 # active:T
 # name:ZON Format
 # score:98.5
-# version:"1.0.5"
+# version:"1.0.4"
 
 decoded = zon.decode(encoded)
-# {"name": "ZON Format", "version": "1.0.5", "active": True, "score": 98.5}
+# {"name": "ZON Format", "version": "1.0.4", "active": True, "score": 98.5}
 ```
 
 ### Example 2: Uniform Table
