@@ -1,7 +1,7 @@
 """
-ZON Encoder v1.0.4 - Compact Hybrid Format
+ZON Encoder v1.0.5 - Compact Hybrid Format
 
-Breaking changes from v1.0.3:
+Breaking changes from v1.0.4:
 - Colon-less syntax for nested objects and arrays
 - Smart flattening with dot notation
 - Control character escaping (ASCII 0-31)

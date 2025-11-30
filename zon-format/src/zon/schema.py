@@ -1,5 +1,5 @@
 """
-ZON Schema Validation v1.0.4 - LLM Guardrails
+ZON Schema Validation v1.0.5 - LLM Guardrails
 
 Provides runtime schema validation for LLM outputs.
 """

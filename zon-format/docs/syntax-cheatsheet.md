@@ -2,7 +2,7 @@
 
 Copyright (c) 2025 ZON-FORMAT (Roni Bhakta)
 
-Quick reference for ZON format syntax. Cross-referenced with actual implementation in v1.0.4.
+Quick reference for ZON format syntax. Cross-referenced with actual implementation in v1.0.5.
 
 ## Basic Types
 
@@ -46,7 +46,7 @@ score:98.5
 
 ### Nested Objects
 
-**Colon-less Syntax (v1.0.4):**
+**Colon-less Syntax (v2.0.5):**
 ```zon
 # Colon is optional if value starts with { or [
 config{database{host:localhost,port:5432},cache{ttl:3600,enabled:T}}
@@ -64,7 +64,7 @@ config:"{database:{host:localhost,port:5432}}"
 ### Primitive Arrays (Inline)
 
 ```zon
-tags:"[python,llm,zon]"
+tags:"[nodejs,typescript,llm]"
 numbers:"[1,2,3,4,5]"
 flags:"[T,F,T]"
 ```
@@ -172,11 +172,11 @@ users:@(2):id,name,active
 
 ## Type Conversions
 
-| ZON | Python | Notes |
-|-----|--------|-------|
-| `T` | `True` | Boolean true |
-| `F` | `False` | Boolean false |
-| `null` | `None` | Null value |
+| ZON | JSON | Notes |
+|-----|------|-------|
+| `T` | `true` | Boolean true |
+| `F` | `false` | Boolean false |
+| `null` | `null` | Null value |
 | `42` | `42` | Number (integer) |
 | `3.14` | `3.14` | Number (float) |  
 | `hello` | `"hello"` | Unquoted string |
@@ -250,7 +250,7 @@ path:"C:\\Users\\data"
 
 **ZON:**
 ```zon
-metadata{version:1.0.4,env:production}
+metadata{version:1.0.5,env:production}
 users:@(3):active,id,loginCount,name
 T,1,42,Alice
 T,2,17,Bob
@@ -303,6 +303,6 @@ Question: How many active users are there?
 ---
 
 **See also:**
-- [Format Specification](./SPEC.md) - Formal grammar
+- [Format Specification](../SPEC.md) - Formal grammar
 - [API Reference](./api-reference.md) - encode/decode functions
 - [LLM Best Practices](./llm-best-practices.md) - Usage guide

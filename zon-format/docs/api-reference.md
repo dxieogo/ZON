@@ -2,7 +2,7 @@
 
 Copyright (c) 2025 ZON-FORMAT (Roni Bhakta)
 
-Complete API documentation for `zon-format` v1.0.4 (Python).
+Complete API documentation for `zon-format` v1.0.5 (Python).
 
 ## Installation
 
@@ -206,24 +206,6 @@ except ZonDecodeError as e:
     print(str(e))      # "[E001] Row count mismatch... (line 5)"
 ```
 
-### `ZonEncodeError`
-
-Thrown when encoding fails (e.g., circular reference).
-
-**Example:**
-
-```python
-from zon import encode, ZonEncodeError
-
-circular = {"name": "loop"}
-circular["self"] = circular
-
-try:
-    encoded = encode(circular)
-except ZonEncodeError as e:
-    print(e.message)  # "Circular reference detected"
-```
-
 ### Common Error Codes
 
 | Code | Description | Example |
@@ -254,7 +236,7 @@ data = zon.decode(zon_string, strict=False)
 ```python
 data = {
     "name": "ZON Format",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "active": True,
     "score": 98.5
 }
@@ -263,10 +245,10 @@ encoded = zon.encode(data)
 # active:T
 # name:ZON Format
 # score:98.5
-# version:"1.0.4"
+# version:"1.0.5"
 
 decoded = zon.decode(encoded)
-# {"name": "ZON Format", "version": "1.0.4", "active": True, "score": 98.5}
+# {"name": "ZON Format", "version": "1.0.5", "active": True, "score": 98.5}
 ```
 
 ### Example 2: Uniform Table
@@ -360,8 +342,8 @@ test_round_trip("hello")                          # ✅
 ```
 
 **Verified:**
-- ✅ 94/94 unit tests pass
-- ✅ 27/27 example datasets verified
+- ✅ 28/28 unit tests pass
+- ✅ 27/27 datasets verified (9 examples + 18 comprehensive)
 - ✅ Zero data loss across all test cases
 
 ---
@@ -394,6 +376,19 @@ JSON           ██████████░░░░░░░░░░  744
 
 > [!TIP]
 > ZON achieves **99.0% accuracy** while using **20.8% fewer tokens** than TOON and **13.7% fewer** than Minified JSON.
+
+#### Per-Model Comparison
+
+Accuracy on the unified dataset with gpt-5-nano:
+
+```
+gpt-5-nano (Azure OpenAI)
+→ ZON            ████████████████████  99.0% (306/309) │ 692 tokens
+  TOON           ████████████████████  99.0% (306/309) │ 874 tokens
+  CSV            ████████████████████  99.0% (306/309) │ 714 tokens
+  JSON           ███████████████████░  96.8% (299/309) │ 1,300 tokens
+  JSON compact   ██████████████████░░  91.7% (283/309) │ 802 tokens
+```
 
 **ZON is optimized for:**
 - ✅ Uniform lists of objects (tables)
