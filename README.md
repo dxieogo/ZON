@@ -11,7 +11,7 @@
 
 **Zero Overhead Notation** - A compact, human-readable way to encode JSON for LLMs.
 
-**File Extension:** `.zonf` | **Media Type:** `text/zon` | **Encoding:** UTF-8
+**File Extension:** `.zonf` | **Media Type:** `text/zonf` | **Encoding:** UTF-8
 
 ZON is a token-efficient serialization format designed for LLM workflows. It achieves 35-50% token reduction vs JSON through tabular encoding, single-character primitives, and intelligent compression (Delta, Dictionary) while maintaining 100% data fidelity.
 
