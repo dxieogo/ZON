@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.2.0] - 2025-12-07
+
+### Major Release: Enterprise Features & Production Readiness
+
+This release brings major enhancements aligned with the TypeScript v1.3.0 implementation, focusing on adaptive encoding, developer experience, and production-ready features.
+
+### Added
+
+#### Adaptive Encoding System
+- **4 Encoding Modes**: `compact`, `readable`, `llm-optimized` for optimal output
+- **Data Complexity Analyzer**: Automatic analysis of nesting depth, irregularity, field count
+- **Mode Recommendation**: `recommend_mode()` suggests optimal encoding based on data structure
+- **Intelligent Format Selection**: `encode_adaptive()` with customizable options
+- **Test Coverage**: 17 tests for adaptive encoding functionality
+
+### Changed
+- **Version**: Updated to 1.2.0 for feature parity with TypeScript package
+- **API**: Added `encode_adaptive()` as high-level encoding function
+- **Documentation**: Aligned with TypeScript v1.3.0 feature set
+
+### Performance
+- **Adaptive Selection**: Automatically chooses best encoding for your data
+- **Mode Optimization**: Each mode tuned for specific use cases (compression, readability, LLM clarity)
+- **Test Suite**: All 237 tests passing
+
 ## [1.1.0] - 2024-12-01
 
 ### Added

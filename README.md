@@ -7,7 +7,7 @@
 [![Tests](https://img.shields.io/badge/tests-220%2F220%20passing-brightgreen.svg)](#quality--testing)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-# ZON → JSON is dead. TOON was cute. ZON just won. (Now in Python v1.1.0)
+# ZON → JSON is dead. TOON was cute. ZON just won. (Now in Python v1.2.0)
 
 **Zero Overhead Notation** - A compact, human-readable way to encode JSON for LLMs.
 
@@ -571,6 +571,56 @@ logs:"[{id:101,level:INFO},{id:102,level:WARN}]"
 
 ---
 
+## Encoding Modes (New in v1.2.0)
+
+ZON now provides **three encoding modes** optimized for different use cases:
+
+### Mode Overview
+
+| Mode | Best For | Token Efficiency | Human Readable | LLM Clarity | Default |
+|------|----------|------------------|----------------|-------------|---------|
+| **compact** | Production APIs, LLMs | ⭐⭐⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐ | ✅ YES |
+| **llm-optimized** | AI workflows | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | |
+| **readable** | Config files, debugging | ⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | |
+
+### Adaptive Encoding
+
+```python
+from zon import encode_adaptive, AdaptiveEncodeOptions, recommend_mode
+
+# Use compact mode (default - maximum compression)
+output = encode_adaptive(data)
+
+# Use readable mode (human-friendly)
+output = encode_adaptive(data, AdaptiveEncodeOptions(mode='readable'))
+
+# Use LLM-optimized mode (balanced for AI)
+output = encode_adaptive(data, AdaptiveEncodeOptions(mode='llm-optimized'))
+
+# Get recommendation for your data
+recommendation = recommend_mode(data)
+print(f"Use {recommendation['mode']} mode: {recommendation['reason']}")
+```
+
+### Mode Details
+
+**Compact Mode (Default)**
+- Maximum compression using tables and abbreviations (`T`/`F` for booleans)
+- Dictionary compression for repeated values
+- Best for production APIs and cost-sensitive LLM workflows
+
+**LLM-Optimized Mode**
+- Balances token efficiency with AI comprehension
+- Uses `true`/`false` instead of `T`/`F` for better LLM understanding
+- Disables dictionary compression for clarity
+
+**Readable Mode**
+- Human-friendly formatting with proper indentation
+- Perfect for configuration files and debugging
+- Easy editing and version control
+
+---
+
 ## API Reference
 
 ### `zon.encode(data: Any) -> str`
@@ -589,6 +639,47 @@ zon_str = zon.encode({
 ```
 
 **Returns:** ZON-formatted string
+
+### `zon.encode_adaptive(data: Any, options: AdaptiveEncodeOptions = None) -> str`
+
+Encodes Python data using adaptive mode selection (New in v1.2.0).
+
+```python
+from zon import encode_adaptive, AdaptiveEncodeOptions
+
+# Compact mode (default)
+output = encode_adaptive(data)
+
+# Readable mode with custom indentation
+output = encode_adaptive(
+    data,
+    AdaptiveEncodeOptions(mode='readable', indent=4)
+)
+
+# With debug information
+result = encode_adaptive(
+    data,
+    AdaptiveEncodeOptions(mode='compact', debug=True)
+)
+print(result.decisions)  # See encoding decisions
+```
+
+**Returns:** ZON-formatted string or `AdaptiveEncodeResult` if debug=True
+
+### `zon.recommend_mode(data: Any) -> dict`
+
+Analyzes data and recommends optimal encoding mode (New in v1.2.0).
+
+```python
+from zon import recommend_mode
+
+recommendation = recommend_mode(my_data)
+print(f"Use {recommendation['mode']} mode")
+print(f"Confidence: {recommendation['confidence']}")
+print(f"Reason: {recommendation['reason']}")
+```
+
+**Returns:** Dictionary with mode, confidence, reason, and metrics
 
 ### `zon.decode(zon_string: str, strict: bool = True) -> Any`
 
@@ -823,4 +914,4 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 **Made with ❤️ for the LLM community**
 
-*ZON v1.0.4 - Token efficiency that scales with complexity*
+*ZON v1.2.0 - Token efficiency that scales with complexity, now with adaptive encoding*
