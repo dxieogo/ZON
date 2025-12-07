@@ -36,6 +36,25 @@ from .binary import (
     BinaryZonDecoder,
     MAGIC_HEADER
 )
+from .versioning import (
+    embed_version,
+    extract_version,
+    strip_version,
+    compare_versions,
+    is_compatible,
+    ZonMigrationManager,
+    ZonDocumentMetadata
+)
+from .tools import (
+    size,
+    compare_formats,
+    infer_schema,
+    analyze,
+    compare,
+    is_safe,
+    ZonValidator,
+    validate_zon
+)
 from .llm.optimizer import LLMOptimizer
 from .llm.token_counter import TokenCounter
 from .schema.inference import TypeInferrer
@@ -66,6 +85,21 @@ __all__ = [
     "ZonDecoder",
     "ZonStreamEncoder",
     "ZonStreamDecoder",
+    "embed_version",
+    "extract_version",
+    "strip_version",
+    "compare_versions",
+    "is_compatible",
+    "ZonMigrationManager",
+    "ZonDocumentMetadata",
+    "size",
+    "compare_formats",
+    "infer_schema",
+    "analyze",
+    "compare",
+    "is_safe",
+    "ZonValidator",
+    "validate_zon",
     "LLMOptimizer",
     "TokenCounter",
     "TypeInferrer",
