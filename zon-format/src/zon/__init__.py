@@ -17,6 +17,18 @@ Main components:
 from .core.encoder import encode, encode_llm, ZonEncoder
 from .core.decoder import decode, ZonDecoder
 from .core.stream import ZonStreamEncoder, ZonStreamDecoder
+from .core.adaptive import (
+    encode_adaptive, 
+    recommend_mode, 
+    AdaptiveEncoder,
+    AdaptiveEncodeOptions,
+    AdaptiveEncodeResult
+)
+from .core.analyzer import (
+    DataComplexityAnalyzer,
+    ComplexityMetrics,
+    AnalysisResult
+)
 from .llm.optimizer import LLMOptimizer
 from .llm.token_counter import TokenCounter
 from .schema.inference import TypeInferrer
@@ -24,12 +36,20 @@ from .core.types import SparseMode
 from .core.exceptions import ZonDecodeError, ZonEncodeError
 from .schema.schema import zon, validate, ZonResult, ZonIssue, ZonSchema
 
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 
 __all__ = [
     "encode", 
     "encode_llm",
+    "encode_adaptive",
+    "recommend_mode",
     "ZonEncoder",
+    "AdaptiveEncoder",
+    "AdaptiveEncodeOptions",
+    "AdaptiveEncodeResult",
+    "DataComplexityAnalyzer",
+    "ComplexityMetrics",
+    "AnalysisResult",
     "decode", 
     "ZonDecoder",
     "ZonStreamEncoder",
