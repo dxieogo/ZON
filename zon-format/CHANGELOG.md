@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.2.0] - 2025-12-07
+## [1.2.0] - 2024-12-07
 
 ### Major Release: Enterprise Features & Production Readiness
 

@@ -13,7 +13,6 @@ from .analyzer import DataComplexityAnalyzer, ComplexityMetrics, AnalysisResult
 
 EncodingMode = Literal['compact', 'readable', 'llm-optimized']
 
-
 @dataclass
 class AdaptiveEncodeOptions:
     """Options for adaptive encoding."""
@@ -98,6 +97,12 @@ class AdaptiveEncoder:
             encode_options = self._get_llm_optimized_options(analysis, decisions)
         else:
             encode_options = {}
+        
+        # Override with user-provided options if specified
+        if options.enable_dict_compression is not None:
+            encode_options['enable_dict_compression'] = options.enable_dict_compression
+        if options.enable_type_coercion is not None:
+            encode_options['enable_type_coercion'] = options.enable_type_coercion
         
         # Create encoder with the selected options
         encoder = ZonEncoder(
